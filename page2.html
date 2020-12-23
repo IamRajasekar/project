@@ -1,0 +1,70 @@
+<html>
+    <body>
+        <style>
+            div{
+                text-align: center;
+                text-emphasis-position: fixed;
+                background-image: url("aa.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-attachment: fixed;
+                background-size: 60%,150%;
+                border-radius: 25px;
+            }
+            button{
+                border-radius: 25px;
+                border: none;
+  color: whitesmoke;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  color: black;
+ 
+  cursor: pointer;
+             }
+            </style>
+        <div>
+        <h1>Registerd Details</h1>
+
+        <?php 
+        $servername="localhost";
+        $username="root";
+        $password="";
+        $dbname="html";
+        
+        
+        $nam=$_POST['nam'];
+        $fn=$_POST['fn'];
+        $pn=$_POST['pn'];
+        $addr=$_POST['addr'];
+        
+        
+        $conn= new mysqli($servername,$username,$password,$dbname);
+        if($conn->connect_error)
+        {
+            die("connection failed".$conn->connect_error);
+        }else{
+            $stmt = $conn->prepare("INSERT INTO p1(nam,fn,pn,addr)VALUES(?,?,?,?)");
+            $stmt-> bind_param("ssis", $nam, $fn, $pn, $addr);
+            $stmt->execute();
+            $sql = "SELECT nam, fn, pn, addr FROM p1";
+        $result=$conn->query($sql);
+        
+        if (mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_assoc($result)) {
+                echo "name: " . $row["nam"]. " <br> Father's name: " . $row["fn"]. " <br> phone Number:" . $row["pn"]. " <br> Address:" . $row["addr"]." <br> <br>";
+            }
+        } else {
+            echo "0 results";
+        } 
+            $stmt->close();
+            $conn->close();
+        }
+        ?>
+<button onclick="document.location='p1.html'">Done</button>
+</div>
+
+    </body >
+</html>
